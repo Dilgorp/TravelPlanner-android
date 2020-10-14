@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import ru.dilgorp.android.travelplanner.MainActivity
+import ru.dilgorp.android.travelplanner.ui.fragments.CityFragment
 import ru.dilgorp.android.travelplanner.ui.fragments.LoginFragment
 import javax.inject.Singleton
 
@@ -26,4 +27,5 @@ interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
     fun inject(loginFragment: LoginFragment)
+    fun inject(cityFragment: CityFragment)
 }

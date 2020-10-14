@@ -61,7 +61,11 @@ class LoginRepositoryImpl @Inject constructor(
     }
 
     override fun messageShown() {
-        _message.value = ""
+        setMessage("")
+    }
+
+    override fun setMessage(messageString: String) {
+        _message.value = messageString
     }
 
     private fun processAuthenticationResponse(

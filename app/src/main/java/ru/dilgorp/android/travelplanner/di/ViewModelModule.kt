@@ -8,6 +8,7 @@ import dagger.multibindings.IntoMap
 import ru.dilgorp.android.travelplanner.vm.MainActivityViewModel
 import ru.dilgorp.android.travelplanner.vm.ViewModelFactory
 import ru.dilgorp.android.travelplanner.vm.ViewModelKey
+import ru.dilgorp.android.travelplanner.vm.fragment.CityViewModel
 import ru.dilgorp.android.travelplanner.vm.fragment.LoginViewModel
 
 @Module
@@ -22,6 +23,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MainActivityViewModel::class)
     abstract fun bindMainActivityViewModel(mainActivityViewModel: MainActivityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CityViewModel::class)
+    abstract fun bindCityViewModel(cityViewModel: CityViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory

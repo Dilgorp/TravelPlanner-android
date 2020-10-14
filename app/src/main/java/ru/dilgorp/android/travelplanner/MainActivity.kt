@@ -1,15 +1,13 @@
 package ru.dilgorp.android.travelplanner
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import ru.dilgorp.android.travelplanner.databinding.ActivityMainBinding
+import ru.dilgorp.android.travelplanner.navigator.Navigator
 import ru.dilgorp.android.travelplanner.provider.AppComponentProvider
-import ru.dilgorp.android.travelplanner.ui.dialog.showMessage
 import ru.dilgorp.android.travelplanner.vm.MainActivityViewModel
 import ru.dilgorp.android.travelplanner.vm.ViewModelFactory
 import javax.inject.Inject
@@ -18,8 +16,10 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-
     private val viewModel: MainActivityViewModel by viewModels { viewModelFactory }
+
+    @Inject
+    lateinit var navigator: Navigator
 
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
@@ -53,17 +53,9 @@ class MainActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.credentials.observe(this) {
             if (it.isEmpty()) {
-                showMessage(
-                    binding.root,
-                    getString(R.string.user_logout),
-                    getString(R.string.user_logout)
-                )
+                navigator.navigateWithoutBackStack(navController, R.id.loginFragment)
             } else {
-                showMessage(
-                    binding.root,
-                    getString(R.string.user_logged),
-                    getString(R.string.user_logged)
-                )
+                navigator.navigateWithoutBackStack(navController, R.id.cityFragment)
             }
             binding.toolbar.menu.findItem(R.id.logout_item).isVisible = it.isNotEmpty()
         }
