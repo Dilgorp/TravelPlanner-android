@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import ru.dilgorp.android.travelplanner.BuildConfig
 import ru.dilgorp.android.travelplanner.network.AuthenticationApiService
 import ru.dilgorp.android.travelplanner.network.SearchApiService
 import ru.dilgorp.android.travelplanner.network.UuidAdapter
@@ -26,7 +27,7 @@ class NetworkModule {
     @Singleton
     @Named(BASE_URL_NAME)
     fun provideBaseUrl(): String {
-        return "http://192.168.1.55:8080/"
+        return BuildConfig.LOCAL_SERVER
     }
 
     @Provides
