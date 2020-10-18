@@ -12,20 +12,26 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import kotlinx.android.synthetic.main.fragment_city.view.*
 import ru.dilgorp.android.travelplanner.R
+import ru.dilgorp.android.travelplanner.data.Place.Companion.CITY_UUID_NAME
 import ru.dilgorp.android.travelplanner.databinding.FragmentCityBinding
 import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.BASE_URL_NAME
 import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.SEARCH_PHOTO_PATH_NAME
+import ru.dilgorp.android.travelplanner.navigator.Navigator
 import ru.dilgorp.android.travelplanner.provider.AppComponentProvider
 import ru.dilgorp.android.travelplanner.ui.dialog.showMessage
 import ru.dilgorp.android.travelplanner.vm.ViewModelFactory
 import ru.dilgorp.android.travelplanner.vm.fragment.CityViewModel
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -43,6 +49,12 @@ class CityFragment : Fragment() {
     @Inject
     @Named(SEARCH_PHOTO_PATH_NAME)
     lateinit var searchPhotoPath: String
+
+    @Inject
+    lateinit var navigator: Navigator
+
+    private lateinit var cityUUID: UUID
+    private lateinit var navController: NavController
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -80,17 +92,29 @@ class CityFragment : Fragment() {
             }
             photoId.observe(viewLifecycleOwner) {
                 loadPhoto(it)
+                cityUUID = UUID.fromString(it)
             }
         }
     }
 
     private fun setupViews() {
-        with(binding.name) {
-            setEndIconOnClickListener {
-                editText?.let { et ->
+        navController = findNavController()
+
+        with(binding) {
+            name.setEndIconOnClickListener {
+                name.editText?.let { et ->
                     hideKeyboard()
                     viewModel.getCityInfo(et.text.toString())
                 }
+            }
+            placesTitleLayout.setOnClickListener {
+                val args = Bundle()
+                args.putSerializable(CITY_UUID_NAME, cityUUID)
+                navigator.navigateToDestination(
+                    navController,
+                    R.id.placesFragment,
+                    args
+                )
             }
         }
     }

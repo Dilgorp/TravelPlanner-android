@@ -12,6 +12,7 @@ import ru.dilgorp.android.travelplanner.BuildConfig
 import ru.dilgorp.android.travelplanner.network.AuthenticationApiService
 import ru.dilgorp.android.travelplanner.network.SearchApiService
 import ru.dilgorp.android.travelplanner.network.UuidAdapter
+import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -21,6 +22,7 @@ class NetworkModule {
     companion object {
         const val BASE_URL_NAME = "ru.dilgorp.android.travelplanner.base_url"
         const val SEARCH_PHOTO_PATH_NAME = "ru.dilgorp.android.travelplanner.search_photo_path"
+        const val SEARCH_PLACE_PHOTO_PATH_NAME = "ru.dilgorp.android.travelplanner.search_place_photo_path"
     }
 
     @Provides
@@ -39,8 +41,17 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    @Named(SEARCH_PLACE_PHOTO_PATH_NAME)
+    fun provideSearchPlacePhotoPath(): String {
+        return "search/places/photo/"
+    }
+
+    @Provides
+    @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
+            .connectTimeout(30L, TimeUnit.SECONDS)
+            .readTimeout(30L, TimeUnit.SECONDS)
             .build()
     }
 
