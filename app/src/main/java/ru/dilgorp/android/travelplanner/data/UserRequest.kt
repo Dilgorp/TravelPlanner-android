@@ -1,4 +1,4 @@
-package ru.dilgorp.android.travelplanner.network.response
+package ru.dilgorp.android.travelplanner.data
 
 class UserRequest(
     val uuid: String,

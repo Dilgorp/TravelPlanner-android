@@ -43,7 +43,7 @@ class CityViewModel @Inject constructor(
     fun getCityInfo(text: String) {
         _searching.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            val result = cityRepository.getCityInfo(text).userRequest
+            val result = cityRepository.getCityInfo(text).data
             if (result == null) {
                 _searching.postValue(false)
                 return@launch

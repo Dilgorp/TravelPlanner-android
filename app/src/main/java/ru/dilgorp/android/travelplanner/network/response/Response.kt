@@ -1,6 +1,7 @@
 package ru.dilgorp.android.travelplanner.network.response
 
-abstract class Response(
+class Response<T>(
     val type: ResponseType,
-    val message: String
+    val message: String?,
+    val data: T?
 )

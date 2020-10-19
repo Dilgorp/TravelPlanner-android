@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import okhttp3.Credentials
 import ru.dilgorp.android.travelplanner.data.User
 import ru.dilgorp.android.travelplanner.network.AuthenticationApiService
-import ru.dilgorp.android.travelplanner.network.response.AuthenticationResponse
+import ru.dilgorp.android.travelplanner.network.response.Response
 import ru.dilgorp.android.travelplanner.network.response.ResponseType
 import ru.dilgorp.android.travelplanner.provider.LoginDataProvider
 import ru.dilgorp.android.travelplanner.repository.LoginRepository
@@ -68,7 +68,7 @@ class LoginRepositoryImpl @Inject constructor(
     }
 
     private fun processAuthenticationResponse(
-        response: AuthenticationResponse,
+        response: Response<User>,
         username: String,
         password: String
     ) {

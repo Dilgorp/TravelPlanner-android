@@ -2,8 +2,9 @@ package ru.dilgorp.android.travelplanner.repository.impl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import ru.dilgorp.android.travelplanner.data.UserRequest
 import ru.dilgorp.android.travelplanner.network.SearchApiService
-import ru.dilgorp.android.travelplanner.network.response.CitySearchResponse
+import ru.dilgorp.android.travelplanner.network.response.Response
 import ru.dilgorp.android.travelplanner.network.response.ResponseType
 import ru.dilgorp.android.travelplanner.provider.LoginDataProvider
 import ru.dilgorp.android.travelplanner.repository.CityRepository
@@ -28,7 +29,7 @@ class CityRepositoryImpl @Inject constructor(
         _message.value = messageString
     }
 
-    override suspend fun getCityInfo(cityname: String): CitySearchResponse {
+    override suspend fun getCityInfo(cityname: String): Response<UserRequest> {
         return try {
             val response = searchApiService.getCity(loginDataProvider.credentials.value!!, cityname)
             if(response.type == ResponseType.ERROR){
@@ -37,7 +38,7 @@ class CityRepositoryImpl @Inject constructor(
             response
         }catch (e :Exception){
             _message.postValue(e.localizedMessage)
-            CitySearchResponse(ResponseType.ERROR, e.localizedMessage ?: "", null)
+            Response(ResponseType.ERROR, e.localizedMessage ?: "", null)
         }
     }
 }

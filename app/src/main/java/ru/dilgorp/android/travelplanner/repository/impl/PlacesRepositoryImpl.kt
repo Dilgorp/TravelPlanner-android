@@ -31,7 +31,7 @@ class PlacesRepositoryImpl @Inject constructor(
             if(response.type == ResponseType.ERROR){
                 throw IllegalStateException(response.message)
             }else{
-                _places.postValue(response.places)
+                _places.postValue(response.data)
             }
         }catch (e: Exception){
             _message.postValue(e.localizedMessage)

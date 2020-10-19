@@ -6,19 +6,19 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import ru.dilgorp.android.travelplanner.data.User
 import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.AUTHORIZATION_HEADER_NAME
-import ru.dilgorp.android.travelplanner.network.response.AuthenticationResponse
+import ru.dilgorp.android.travelplanner.network.response.Response
 
 interface AuthenticationApiService {
 
     @POST(REGISTRATION)
     suspend fun postRegistration(
         @Body user: User
-    ): AuthenticationResponse
+    ): Response<User>
 
     @GET(LOGIN)
     suspend fun getLogin(
         @Header(AUTHORIZATION_HEADER_NAME) credentials: String
-    ): AuthenticationResponse
+    ): Response<User>
 
     companion object{
         private const val REGISTRATION = "registration"
