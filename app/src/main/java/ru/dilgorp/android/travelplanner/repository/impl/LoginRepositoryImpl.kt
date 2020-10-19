@@ -4,8 +4,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import okhttp3.Credentials
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import ru.dilgorp.android.travelplanner.data.User
 import ru.dilgorp.android.travelplanner.network.AuthenticationApiService
 import ru.dilgorp.android.travelplanner.network.response.AuthenticationResponse
 import ru.dilgorp.android.travelplanner.network.response.ResponseType
@@ -46,7 +45,7 @@ class LoginRepositoryImpl @Inject constructor(
     override suspend fun register(username: String, password: String) {
         try {
             val response =
-                authenticationApiService.postRegistration(getRequestBody(username, password))
+                authenticationApiService.postRegistration(User(username, password))
             processAuthenticationResponse(response, username, password)
         } catch (e: Exception) {
             _message.postValue(e.localizedMessage)
@@ -83,14 +82,6 @@ class LoginRepositoryImpl @Inject constructor(
             }
             ResponseType.ERROR -> throw IllegalStateException(response.message)
         }
-    }
-
-    private fun getRequestBody(username: String, password: String): RequestBody {
-        return MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("username", username)
-            .addFormDataPart("password", password)
-            .build()
     }
 
     private fun getCredentials(username: String, password: String): String {
