@@ -5,6 +5,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.AUTHORIZATION_HEADER_NAME
 import ru.dilgorp.android.travelplanner.network.response.AuthenticationResponse
 
 interface AuthenticationApiService {
@@ -20,7 +21,6 @@ interface AuthenticationApiService {
     ): AuthenticationResponse
 
     companion object{
-        private const val AUTHORIZATION_HEADER_NAME = "Authorization"
         private const val REGISTRATION = "registration"
         private const val LOGIN = "login"
     }

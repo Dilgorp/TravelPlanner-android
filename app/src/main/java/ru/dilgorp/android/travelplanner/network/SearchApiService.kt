@@ -4,6 +4,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
+import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.AUTHORIZATION_HEADER_NAME
 import ru.dilgorp.android.travelplanner.network.SearchApiService.Companion.PLACES
 import ru.dilgorp.android.travelplanner.network.response.CitySearchResponse
 import ru.dilgorp.android.travelplanner.network.response.PlaceSearchResponse
@@ -25,7 +26,6 @@ interface SearchApiService {
     ): PlaceSearchResponse
 
     companion object {
-        private const val AUTHORIZATION_HEADER_NAME = "Authorization"
         private const val CITY = "search/city/{cityname}"
         private const val PLACES = "/search/places/city/{uuid}"
     }

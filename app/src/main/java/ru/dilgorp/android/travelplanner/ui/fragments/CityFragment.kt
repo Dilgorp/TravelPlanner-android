@@ -2,6 +2,7 @@ package ru.dilgorp.android.travelplanner.ui.fragments
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.net.Credentials
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,13 +18,15 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import kotlinx.android.synthetic.main.fragment_city.view.*
 import ru.dilgorp.android.travelplanner.R
 import ru.dilgorp.android.travelplanner.data.Place.Companion.CITY_UUID_NAME
 import ru.dilgorp.android.travelplanner.databinding.FragmentCityBinding
+import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.AUTHORIZATION_HEADER_NAME
 import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.BASE_URL_NAME
 import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.SEARCH_PHOTO_PATH_NAME
 import ru.dilgorp.android.travelplanner.navigator.Navigator
@@ -55,6 +58,7 @@ class CityFragment : Fragment() {
 
     private lateinit var cityUUID: UUID
     private lateinit var navController: NavController
+    private lateinit var credentials: String
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -94,6 +98,9 @@ class CityFragment : Fragment() {
                 loadPhoto(it)
                 cityUUID = UUID.fromString(it)
             }
+            credentials.observe(viewLifecycleOwner) {
+                this@CityFragment.credentials = it
+            }
         }
     }
 
@@ -131,9 +138,15 @@ class CityFragment : Fragment() {
         val options: RequestOptions = RequestOptions()
             .placeholder(R.drawable.nophoto)
 
+        val glideUrl = GlideUrl(
+            "$baseUrl$searchPhotoPath$photoId",
+            LazyHeaders.Builder()
+                .addHeader(AUTHORIZATION_HEADER_NAME, credentials).build()
+        )
+
         setProgressBarVisibility(true)
         Glide.with(requireContext())
-            .load("$baseUrl$searchPhotoPath$photoId")
+            .load(glideUrl)
             .apply(options)
             .timeout(30000)
             .addListener(object : RequestListener<Drawable> {

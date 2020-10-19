@@ -12,6 +12,7 @@ import ru.dilgorp.android.travelplanner.BuildConfig
 import ru.dilgorp.android.travelplanner.network.AuthenticationApiService
 import ru.dilgorp.android.travelplanner.network.SearchApiService
 import ru.dilgorp.android.travelplanner.network.UuidAdapter
+import ru.dilgorp.android.travelplanner.provider.LoginDataProvider
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
@@ -23,6 +24,7 @@ class NetworkModule {
         const val BASE_URL_NAME = "ru.dilgorp.android.travelplanner.base_url"
         const val SEARCH_PHOTO_PATH_NAME = "ru.dilgorp.android.travelplanner.search_photo_path"
         const val SEARCH_PLACE_PHOTO_PATH_NAME = "ru.dilgorp.android.travelplanner.search_place_photo_path"
+        const val AUTHORIZATION_HEADER_NAME = "Authorization"
     }
 
     @Provides

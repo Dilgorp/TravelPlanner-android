@@ -49,7 +49,7 @@ class PlacesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPlacesBinding.inflate(inflater, container, false)
-        adapter = PlacesAdapter(baseUrl, searchPhotoPath)
+        adapter = PlacesAdapter(baseUrl, searchPhotoPath, viewModel.credentials)
 
         cityUUID = arguments?.getSerializable(CITY_UUID_NAME) as UUID
 

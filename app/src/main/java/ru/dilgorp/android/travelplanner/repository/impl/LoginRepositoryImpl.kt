@@ -55,7 +55,7 @@ class LoginRepositoryImpl @Inject constructor(
 
     override fun logout() {
         val editor = sharedPrefs.edit()
-        editor.putString(CREDENTIALS_NAME, "")
+        editor.remove(CREDENTIALS_NAME)
         editor.apply()
         _credentials.value = ""
     }

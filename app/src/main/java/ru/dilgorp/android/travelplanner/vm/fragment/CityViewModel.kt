@@ -5,12 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.dilgorp.android.travelplanner.provider.LoginDataProvider
 import ru.dilgorp.android.travelplanner.repository.CityRepository
 import ru.dilgorp.android.travelplanner.vm.AbstractMessageViewModel
 import javax.inject.Inject
 
 class CityViewModel @Inject constructor(
-    private val cityRepository: CityRepository
+    private val cityRepository: CityRepository,
+    loginDataProvider: LoginDataProvider
 ) : AbstractMessageViewModel() {
 
     override val message: LiveData<String>
@@ -31,6 +33,8 @@ class CityViewModel @Inject constructor(
     private val _description = MutableLiveData<String>()
     val description: LiveData<String>
         get() = _description
+
+    val credentials = loginDataProvider.credentials
 
     override fun messageShown() {
         cityRepository.messageShown()
