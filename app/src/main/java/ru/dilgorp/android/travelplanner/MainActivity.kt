@@ -8,11 +8,12 @@ import androidx.navigation.findNavController
 import ru.dilgorp.android.travelplanner.databinding.ActivityMainBinding
 import ru.dilgorp.android.travelplanner.navigator.Navigator
 import ru.dilgorp.android.travelplanner.provider.AppComponentProvider
+import ru.dilgorp.android.travelplanner.provider.CredentialsProvider
 import ru.dilgorp.android.travelplanner.vm.MainActivityViewModel
 import ru.dilgorp.android.travelplanner.vm.ViewModelFactory
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CredentialsProvider {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var credentials: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as AppComponentProvider).getAppComponent().inject(this)
@@ -37,6 +40,10 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.toolbar.title = destination.label
         }
+    }
+
+    override fun provideCredentials(): String {
+        return credentials
     }
 
     private fun setupViews() {
@@ -55,9 +62,10 @@ class MainActivity : AppCompatActivity() {
             if (it.isEmpty()) {
                 navigator.navigateWithoutBackStack(navController, R.id.loginFragment)
             } else {
-                navigator.navigateWithoutBackStack(navController, R.id.cityFragment)
+                navigator.navigateWithoutBackStack(navController, R.id.travelsFragment)
             }
             binding.toolbar.menu.findItem(R.id.logout_item).isVisible = it.isNotEmpty()
+            credentials = it
         }
     }
 }

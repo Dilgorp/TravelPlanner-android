@@ -11,6 +11,7 @@ import ru.dilgorp.android.travelplanner.vm.ViewModelKey
 import ru.dilgorp.android.travelplanner.vm.fragment.CityViewModel
 import ru.dilgorp.android.travelplanner.vm.fragment.LoginViewModel
 import ru.dilgorp.android.travelplanner.vm.fragment.PlacesViewModel
+import ru.dilgorp.android.travelplanner.vm.fragment.TravelsViewModel
 
 @Module
 abstract class ViewModelModule {
@@ -34,6 +35,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PlacesViewModel::class)
     abstract fun bindPlacesViewModel(placesViewModel: PlacesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TravelsViewModel::class)
+    abstract fun bindTravelsViewModel(travelsViewModel: TravelsViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory

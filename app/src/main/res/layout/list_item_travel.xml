@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="travelClickListener"
+            type="ru.dilgorp.android.travelplanner.ui.adapter.TravelsAdapter.TravelClickListener" />
+        <variable
+            name="travel"
+            type="ru.dilgorp.android.travelplanner.data.Travel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin"
+        android:elevation="@dimen/elevation"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:onClick="@{() -> travelClickListener.onClick(travel)}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:paddingBottom="@dimen/padding">
+
+            <ImageView
+                android:id="@+id/travel_photo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:contentDescription="@string/place_photo"
+                android:scaleType="centerCrop"
+                android:src="@drawable/nophoto"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin"
+                android:textSize="@dimen/title_text_size"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/travel_photo"
+                tool:text="City - ... - City" />
+
+            <TextView
+                android:id="@+id/cities_count_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                android:text="@string/cities_colon" />
+
+            <TextView
+                android:id="@+id/cities_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toEndOf="@+id/cities_count_label"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                tool:text="5" />
+
+            <TextView
+                android:id="@+id/places_count_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cities_count_label"
+                android:text="@string/places_colon" />
+
+            <TextView
+                android:id="@+id/places_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toEndOf="@+id/places_count_label"
+                app:layout_constraintTop_toBottomOf="@+id/cities_count_label"
+                tool:text="15" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

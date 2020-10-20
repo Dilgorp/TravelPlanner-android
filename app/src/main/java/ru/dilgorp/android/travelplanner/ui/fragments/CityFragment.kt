@@ -2,7 +2,6 @@ package ru.dilgorp.android.travelplanner.ui.fragments
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.net.Credentials
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

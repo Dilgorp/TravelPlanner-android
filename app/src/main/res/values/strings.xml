@@ -21,4 +21,6 @@
     <string name="places_colon">Places:</string>
     <string name="plus">+</string>
     <string name="place_photo">Place photo</string>
+    <string name="add_button">Add button</string>
+    <string name="cities_colon">Cities:</string>
 </resources>
