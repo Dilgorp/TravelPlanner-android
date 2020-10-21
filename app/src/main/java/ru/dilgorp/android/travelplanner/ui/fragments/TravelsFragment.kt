@@ -70,14 +70,16 @@ class TravelsFragment : Fragment() {
                 setupBackground(it.isEmpty())
             }
             travel.observe(viewLifecycleOwner) {
-                navigateToTravelFragment(it)
+                it?.let {
+                    navigateToTravelFragment(it)
+                }
             }
             message.observe(viewLifecycleOwner) {
                 showMessage(requireView(), getString(R.string.error_message), it) {
                     messageShown()
                 }
             }
-            loading.observe(viewLifecycleOwner){
+            loading.observe(viewLifecycleOwner) {
                 setProgressBarVisibility(it)
             }
         }
@@ -95,7 +97,6 @@ class TravelsFragment : Fragment() {
             travelsRv.adapter = adapter
             addTravelButton.setOnClickListener {
                 viewModel.addTravel()
-                viewModel.loadingStarted()
             }
         }
     }
@@ -103,7 +104,6 @@ class TravelsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.updateTravels()
-        viewModel.loadingStarted()
     }
 
     private fun setupBackground(empty: Boolean) {
@@ -131,6 +131,7 @@ class TravelsFragment : Fragment() {
             R.id.travelFragment,
             args
         )
+        viewModel.navigateDone()
     }
 
     private fun setProgressBarVisibility(visible: Boolean) {

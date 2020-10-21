@@ -9,10 +9,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.dilgorp.android.travelplanner.BuildConfig
-import ru.dilgorp.android.travelplanner.network.AuthenticationApiService
-import ru.dilgorp.android.travelplanner.network.SearchApiService
-import ru.dilgorp.android.travelplanner.network.TravelsApiService
-import ru.dilgorp.android.travelplanner.network.UuidAdapter
+import ru.dilgorp.android.travelplanner.network.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
@@ -102,5 +99,11 @@ class NetworkModule {
     @Singleton
     fun provideTravelsApiService(retrofit: Retrofit): TravelsApiService{
         return retrofit.create(TravelsApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCitiesApiService(retrofit: Retrofit): CitiesApiService{
+        return retrofit.create(CitiesApiService::class.java)
     }
 }

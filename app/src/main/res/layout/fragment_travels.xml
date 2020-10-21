@@ -35,7 +35,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tool:listitem="@layout/list_item_travel" />
+                tool:listitem="@layout/list_item_travel"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/add_travel_button"

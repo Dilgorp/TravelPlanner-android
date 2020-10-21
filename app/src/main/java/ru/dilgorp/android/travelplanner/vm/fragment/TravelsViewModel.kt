@@ -35,6 +35,7 @@ class TravelsViewModel @Inject constructor(
     }
 
     fun updateTravels() = viewModelScope.launch(Dispatchers.IO) {
+        loadingStarted()
         val response = travelsRepository.getTravels()
         if (response.type == ResponseType.SUCCESS) {
             _travels.postValue(response.data)
@@ -43,6 +44,7 @@ class TravelsViewModel @Inject constructor(
     }
 
     fun addTravel() = viewModelScope.launch(Dispatchers.IO) {
+        loadingStarted()
         val response = travelsRepository.addTravel()
         if (response.type == ResponseType.SUCCESS) {
             _travel.postValue(response.data)
@@ -54,11 +56,15 @@ class TravelsViewModel @Inject constructor(
         _travel.value = travel
     }
 
-    fun loadingStarted(){
-        _loading.value = true
+    private fun loadingStarted(){
+        _loading.postValue(true)
     }
 
-    fun loadingStopped(){
+    private fun loadingStopped(){
         _loading.postValue(false)
+    }
+
+    fun navigateDone() {
+        _travel.value = null
     }
 }
