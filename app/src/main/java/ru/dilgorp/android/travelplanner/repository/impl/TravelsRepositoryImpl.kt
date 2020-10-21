@@ -7,13 +7,13 @@ import ru.dilgorp.android.travelplanner.network.TravelsApiService
 import ru.dilgorp.android.travelplanner.network.response.Response
 import ru.dilgorp.android.travelplanner.network.response.ResponseType
 import ru.dilgorp.android.travelplanner.provider.LoginDataProvider
-import ru.dilgorp.android.travelplanner.repository.TravelRepository
+import ru.dilgorp.android.travelplanner.repository.TravelsRepository
 import javax.inject.Inject
 
-class TravelRepositoryImpl @Inject constructor(
+class TravelsRepositoryImpl @Inject constructor(
     private val loginDataProvider: LoginDataProvider,
     private val travelsApiService: TravelsApiService
-) : TravelRepository {
+) : TravelsRepository {
 
     private val _message = MutableLiveData<String>()
     override val message: LiveData<String>

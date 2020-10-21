@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import ru.dilgorp.android.travelplanner.data.Travel
 import ru.dilgorp.android.travelplanner.databinding.FragmentTravelBinding
 import ru.dilgorp.android.travelplanner.provider.AppComponentProvider
 
@@ -23,6 +24,9 @@ class TravelFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTravelBinding.inflate(inflater, container, false)
+
+        val travel = arguments?.getSerializable(Travel.ARG_NAME) as Travel
+        binding.userUuid.text = travel.toString()
 
         setupViews()
         setupObservers()

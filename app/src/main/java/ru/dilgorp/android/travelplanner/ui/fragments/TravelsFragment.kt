@@ -18,6 +18,7 @@ import ru.dilgorp.android.travelplanner.navigator.Navigator
 import ru.dilgorp.android.travelplanner.provider.AppComponentProvider
 import ru.dilgorp.android.travelplanner.provider.CredentialsProvider
 import ru.dilgorp.android.travelplanner.ui.adapter.TravelsAdapter
+import ru.dilgorp.android.travelplanner.ui.dialog.showMessage
 import ru.dilgorp.android.travelplanner.vm.ViewModelFactory
 import ru.dilgorp.android.travelplanner.vm.fragment.TravelsViewModel
 import javax.inject.Inject
@@ -33,7 +34,7 @@ class TravelsFragment : Fragment() {
     lateinit var baseUrl: String
 
     @Inject
-    private lateinit var viewModelFactory: ViewModelFactory
+    lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: TravelsViewModel by viewModels {
         viewModelFactory
     }
@@ -71,6 +72,14 @@ class TravelsFragment : Fragment() {
             travel.observe(viewLifecycleOwner) {
                 navigateToTravelFragment(it)
             }
+            message.observe(viewLifecycleOwner) {
+                showMessage(requireView(), getString(R.string.error_message), it) {
+                    messageShown()
+                }
+            }
+            loading.observe(viewLifecycleOwner){
+                setProgressBarVisibility(it)
+            }
         }
     }
 
@@ -78,16 +87,23 @@ class TravelsFragment : Fragment() {
         navController = findNavController()
 
         adapter = TravelsAdapter(credentials, baseUrl)
-        adapter.clickListener = TravelsAdapter.TravelClickListener { navigateToTravelFragment(it) }
+        adapter.clickListener = TravelsAdapter.TravelClickListener {
+            viewModel.selectTravel(it)
+        }
 
         with(binding) {
             travelsRv.adapter = adapter
+            addTravelButton.setOnClickListener {
+                viewModel.addTravel()
+                viewModel.loadingStarted()
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.updateTravels()
+        viewModel.loadingStarted()
     }
 
     private fun setupBackground(empty: Boolean) {
@@ -115,5 +131,12 @@ class TravelsFragment : Fragment() {
             R.id.travelFragment,
             args
         )
+    }
+
+    private fun setProgressBarVisibility(visible: Boolean) {
+        with(binding.progressBar) {
+            visibility = if (visible) View.VISIBLE else View.GONE
+            isIndeterminate = visible
+        }
     }
 }

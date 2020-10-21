@@ -6,4 +6,5 @@
     <dimen name="elevation">2dp</dimen>
     <dimen name="padding">8dp</dimen>
     <dimen name="double_padding">16dp</dimen>
+    <dimen name="progressbar_top_margin">-6dp</dimen>
 </resources>

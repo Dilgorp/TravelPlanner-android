@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity(), CredentialsProvider {
         setupViews()
         setContentView(binding.root)
 
+        credentials = viewModel.credentials.value ?: ""
+
         setupObservers()
 
         navController = findNavController(R.id.nav_host_fragment)
