@@ -44,7 +44,10 @@ class LoginRepositoryImpl @Inject constructor(
     override suspend fun login(username: String, password: String) {
         try {
             val response =
-                authenticationApiService.getLogin(getCredentials(username, password))
+                authenticationApiService.getLogin(
+                    getCredentials(username, password),
+                    User(UUID.randomUUID(), username, password)
+                )
             processAuthenticationResponse(response, username, password)
         } catch (e: Exception) {
             _message.postValue(e.localizedMessage)

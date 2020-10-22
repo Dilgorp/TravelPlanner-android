@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.dilgorp.android.travelplanner.data.City
+import ru.dilgorp.android.travelplanner.data.CityPlace
 import ru.dilgorp.android.travelplanner.provider.LoginDataProvider
 import ru.dilgorp.android.travelplanner.repository.CityRepository
 import ru.dilgorp.android.travelplanner.vm.AbstractMessageViewModel
@@ -22,17 +24,13 @@ class CityViewModel @Inject constructor(
     val searching: LiveData<Boolean>
         get() = _searching
 
-    private val _photoId = MutableLiveData<String>()
-    val photoId: LiveData<String>
-        get() = _photoId
+    private val _city = MutableLiveData<City>()
+    val city: LiveData<City>
+        get() = _city
 
-    private val _name = MutableLiveData<String>()
-    val name: LiveData<String>
-        get() = _name
-
-    private val _description = MutableLiveData<String>()
-    val description: LiveData<String>
-        get() = _description
+    private val _places = MutableLiveData<List<CityPlace>>()
+    val places: LiveData<List<CityPlace>>
+        get() = _places
 
     val credentials = loginDataProvider.credentials
 
@@ -40,19 +38,24 @@ class CityViewModel @Inject constructor(
         cityRepository.messageShown()
     }
 
-    fun getCityInfo(text: String) {
+    fun getCityInfo(city: City, cityname: String) {
         _searching.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            val result = cityRepository.getCityInfo(text).data
-            if (result == null) {
-                _searching.postValue(false)
-                return@launch
+            val result = cityRepository.getCityInfo(city, cityname).data
+            if (result != null) {
+                _city.postValue(result)
             }
+            _searching.postValue(false)
+        }
+    }
 
-            _photoId.postValue(result.uuid)
-            _name.postValue(result.name)
-            _description.postValue(result.formattedAddress)
-
+    fun getCityPlaces(city: City) {
+        _searching.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = cityRepository.getCityPlaces(city).data
+            if (result != null) {
+                _places.postValue(result)
+            }
             _searching.postValue(false)
         }
     }

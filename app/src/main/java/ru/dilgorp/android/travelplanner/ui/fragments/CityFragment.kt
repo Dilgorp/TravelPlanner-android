@@ -23,22 +23,27 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import ru.dilgorp.android.travelplanner.R
+import ru.dilgorp.android.travelplanner.data.City
 import ru.dilgorp.android.travelplanner.data.Place.Companion.CITY_UUID_NAME
 import ru.dilgorp.android.travelplanner.databinding.FragmentCityBinding
 import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.AUTHORIZATION_HEADER_NAME
 import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.BASE_URL_NAME
-import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.SEARCH_PHOTO_PATH_NAME
 import ru.dilgorp.android.travelplanner.navigator.Navigator
 import ru.dilgorp.android.travelplanner.provider.AppComponentProvider
+import ru.dilgorp.android.travelplanner.provider.CredentialsProvider
+import ru.dilgorp.android.travelplanner.ui.adapter.CityPlacesAdapter
 import ru.dilgorp.android.travelplanner.ui.dialog.showMessage
 import ru.dilgorp.android.travelplanner.vm.ViewModelFactory
 import ru.dilgorp.android.travelplanner.vm.fragment.CityViewModel
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 
 class CityFragment : Fragment() {
     private lateinit var binding: FragmentCityBinding
+    private lateinit var credentials: String
+    private lateinit var adapter: CityPlacesAdapter
+    private lateinit var navController: NavController
+    private lateinit var city: City
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -49,15 +54,7 @@ class CityFragment : Fragment() {
     lateinit var baseUrl: String
 
     @Inject
-    @Named(SEARCH_PHOTO_PATH_NAME)
-    lateinit var searchPhotoPath: String
-
-    @Inject
     lateinit var navigator: Navigator
-
-    private lateinit var cityUUID: UUID
-    private lateinit var navController: NavController
-    private lateinit var credentials: String
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -70,11 +67,20 @@ class CityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCityBinding.inflate(inflater, container, false)
+        credentials = (requireActivity() as CredentialsProvider).provideCredentials()
+        city = arguments?.getSerializable(City.ARG_NAME) as City
+        adapter = CityPlacesAdapter(credentials, baseUrl)
 
         setupViews()
         setupObservers()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCityPlaces(city)
+        loadPhoto()
     }
 
     private fun setupObservers() {
@@ -87,41 +93,44 @@ class CityFragment : Fragment() {
                     messageShown()
                 }
             }
-            name.observe(viewLifecycleOwner) {
-                binding.name.editText?.setText(it)
+            city.observe(viewLifecycleOwner) {
+                setupCityFields(it)
+                this@CityFragment.city = it
+                loadPhoto()
             }
-            description.observe(viewLifecycleOwner) {
-                binding.description.editText?.setText(it)
-            }
-            photoId.observe(viewLifecycleOwner) {
-                loadPhoto(it)
-                cityUUID = UUID.fromString(it)
-            }
-            credentials.observe(viewLifecycleOwner) {
-                this@CityFragment.credentials = it
+            places.observe(viewLifecycleOwner) {
+                adapter.setData(it)
             }
         }
+    }
+
+    private fun setupCityFields(city: City) {
+        binding.name.editText?.setText(city.name)
+        binding.description.editText?.setText(city.description)
     }
 
     private fun setupViews() {
         navController = findNavController()
 
+        setupCityFields(city)
+
         with(binding) {
             name.setEndIconOnClickListener {
                 name.editText?.let { et ->
                     hideKeyboard()
-                    viewModel.getCityInfo(et.text.toString())
+                    viewModel.getCityInfo(city, et.text.toString())
                 }
             }
             placesTitleLayout.setOnClickListener {
                 val args = Bundle()
-                args.putSerializable(CITY_UUID_NAME, cityUUID)
+                args.putSerializable(CITY_UUID_NAME, city.userRequestUuid)
                 navigator.navigateToDestination(
                     navController,
                     R.id.placesFragment,
                     args
                 )
             }
+            placesRv.adapter = adapter
         }
     }
 
@@ -133,12 +142,22 @@ class CityFragment : Fragment() {
         view.clearFocus()
     }
 
-    private fun loadPhoto(photoId: String) {
+    private fun loadPhoto() {
+
+        if(city.name.isEmpty()){
+            return
+        }
+
+        val path = GET_CITY_IMAGE_PATH
+            .replace("{user_uuid}", city.userUuid.toString())
+            .replace("{travel_uuid}", city.travelUuid.toString())
+            .replace("{city_uuid}", city.uuid.toString())
+
         val options: RequestOptions = RequestOptions()
             .placeholder(R.drawable.nophoto)
 
         val glideUrl = GlideUrl(
-            "$baseUrl$searchPhotoPath$photoId",
+            "$baseUrl$path",
             LazyHeaders.Builder()
                 .addHeader(AUTHORIZATION_HEADER_NAME, credentials).build()
         )
@@ -179,5 +198,10 @@ class CityFragment : Fragment() {
             visibility = if (visible) VISIBLE else GONE
             isIndeterminate = visible
         }
+    }
+
+    companion object {
+        private const val GET_CITY_IMAGE_PATH =
+            "user/{user_uuid}/travel/{travel_uuid}/city/{city_uuid}/photo"
     }
 }

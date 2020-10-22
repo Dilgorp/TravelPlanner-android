@@ -33,13 +33,6 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    @Named(SEARCH_PHOTO_PATH_NAME)
-    fun provideSearchPhotoPath(): String {
-        return "search/photo/city/"
-    }
-
-    @Provides
-    @Singleton
     @Named(SEARCH_PLACE_PHOTO_PATH_NAME)
     fun provideSearchPlacePhotoPath(): String {
         return "search/places/photo/"
@@ -105,5 +98,11 @@ class NetworkModule {
     @Singleton
     fun provideCitiesApiService(retrofit: Retrofit): CitiesApiService{
         return retrofit.create(CitiesApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCityPlacesApiService(retrofit: Retrofit): CityPlacesApiService{
+        return retrofit.create(CityPlacesApiService::class.java)
     }
 }

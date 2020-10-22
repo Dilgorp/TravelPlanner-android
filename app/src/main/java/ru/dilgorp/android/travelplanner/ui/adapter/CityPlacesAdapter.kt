@@ -11,59 +11,54 @@ import com.bumptech.glide.load.model.LazyHeaders
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.dilgorp.android.travelplanner.data.City
-import ru.dilgorp.android.travelplanner.databinding.ListItemCityBinding
+import ru.dilgorp.android.travelplanner.data.CityPlace
+import ru.dilgorp.android.travelplanner.databinding.ListItemCityPlaceBinding
 import ru.dilgorp.android.travelplanner.di.NetworkModule
 
-class CitiesAdapter(
+class CityPlacesAdapter(
     private val credentials: String,
     private val baseUrl: String
-) : ListAdapter<City, CitiesAdapter.ViewHolder>(CityDiffCallback()) {
+) : ListAdapter<CityPlace, CityPlacesAdapter.ViewHolder>(CityPlaceDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Main)
-    var clickListener = CityClickListener {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), credentials, baseUrl, clickListener)
+        holder.bind(getItem(position), credentials, baseUrl)
     }
 
-    fun setData(list: List<City>) {
+    fun setData(list: List<CityPlace>) {
         adapterScope.launch {
             submitList(list)
         }
     }
 
     class ViewHolder private constructor(
-        private val binding: ListItemCityBinding
+        private val binding: ListItemCityPlaceBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val binding = ListItemCityBinding.inflate(inflater, parent, false)
+                val binding = ListItemCityPlaceBinding.inflate(inflater, parent, false)
                 return ViewHolder(binding)
             }
         }
 
         fun bind(
-            city: City, credentials: String,
-            baseUrl: String, clickListener: CityClickListener
+            cityPlace: CityPlace, credentials: String,
+            baseUrl: String
         ) {
             with(binding) {
-                name.text = city.name
-                description.text = city.description
-                placesCount.text = city.placesCount.toString()
-                cityClickListener = clickListener
-                this.city = city
-
-                val path = GET_CITY_IMAGE_PATH
-                    .replace("{user_uuid}", city.userUuid.toString())
-                    .replace("{travel_uuid}", city.travelUuid.toString())
-                    .replace("{city_uuid}", city.uuid.toString())
+                name.text = cityPlace.name
+                description.text = cityPlace.description
+                val path = GET_PLACE_IMAGE_PATH
+                    .replace("{user_uuid}", cityPlace.userUuid.toString())
+                    .replace("{travel_uuid}", cityPlace.travelUuid.toString())
+                    .replace("{city_uuid}", cityPlace.cityUuid.toString())
+                    .replace("{place_uuid}", cityPlace.uuid.toString())
 
                 val glideUrl = GlideUrl(
                     "$baseUrl$path",
@@ -74,28 +69,24 @@ class CitiesAdapter(
                 Glide.with(root.context)
                     .load(glideUrl)
                     .timeout(30000)
-                    .into(cityPhoto)
+                    .into(placePhoto)
             }
         }
     }
 
-    class CityDiffCallback : DiffUtil.ItemCallback<City>() {
-        override fun areItemsTheSame(oldItem: City, newItem: City): Boolean {
+    class CityPlaceDiffCallback : DiffUtil.ItemCallback<CityPlace>() {
+        override fun areItemsTheSame(oldItem: CityPlace, newItem: CityPlace): Boolean {
             return oldItem.uuid == newItem.uuid
         }
 
-        override fun areContentsTheSame(oldItem: City, newItem: City): Boolean {
+        override fun areContentsTheSame(oldItem: CityPlace, newItem: CityPlace): Boolean {
             return oldItem == newItem
         }
 
     }
 
-    class CityClickListener(private val clickListener: (city: City) -> Unit) {
-        fun onClick(city: City) = clickListener(city)
-    }
-
     companion object {
-        private const val GET_CITY_IMAGE_PATH =
-            "user/{user_uuid}/travel/{travel_uuid}/city/{city_uuid}/photo"
+        private const val GET_PLACE_IMAGE_PATH =
+            "/user/{user_uuid}/travel/{travel_uuid}/city/{city_uuid}/places/{place_uuid}/photo"
     }
 }

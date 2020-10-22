@@ -11,27 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/photo"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:contentDescription="@string/city_image"
-            android:scaleType="centerCrop"
-            android:src="@drawable/nophoto"
-            app:layout_constraintBottom_toTopOf="@+id/progressBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/progressbar_top_margin"
+                android:layout_marginBottom="@dimen/progressbar_top_margin"/>
+
+            <ImageView
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/city_image"
+                android:scaleType="centerCrop"
+                android:src="@drawable/nophoto"/>
+
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -81,21 +87,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin"
             android:layout_marginEnd="@dimen/margin"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
             android:orientation="horizontal"
             android:paddingTop="@dimen/double_padding"
+            android:paddingBottom="@dimen/padding"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            app:layout_constraintTop_toBottomOf="@+id/description">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/double_margin"
                 android:text="@string/places_colon"
                 android:textColor="@color/primaryColor"
                 android:textSize="@dimen/title_text_size"
-                android:textStyle="bold"
-                android:layout_marginStart="@dimen/double_margin"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/places_count"
@@ -109,11 +116,32 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/double_margin"
                 android:gravity="end"
                 android:text="@string/plus"
                 android:textSize="@dimen/title_text_size"
-                android:textStyle="bold"
-                android:layout_marginEnd="@dimen/double_margin"/>
+                android:textStyle="bold" />
         </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            android:background="@color/primaryColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/places_title_layout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/places_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            tool:listitem="@layout/list_item_city_place" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

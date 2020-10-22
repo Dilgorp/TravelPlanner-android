@@ -15,9 +15,10 @@ interface AuthenticationApiService {
         @Body user: User
     ): Response<User>
 
-    @GET(LOGIN)
+    @POST(LOGIN)
     suspend fun getLogin(
-        @Header(AUTHORIZATION_HEADER_NAME) credentials: String
+        @Header(AUTHORIZATION_HEADER_NAME) credentials: String,
+        @Body user: User
     ): Response<User>
 
     companion object{
