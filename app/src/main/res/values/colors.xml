@@ -8,5 +8,6 @@
     <color name="secondaryDarkColor">#000a12</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
-    <color name="fragmentBackgroundColor">#DCDCDC</color>
+    <color name="selectedBackgroundColor">#DCDCDC</color>
+    <color name="cardBackgroundColor">#ffffff</color>
 </resources>

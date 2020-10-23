@@ -14,20 +14,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:orientation="vertical">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="@dimen/progressbar_top_margin"
-                android:layout_marginBottom="@dimen/progressbar_top_margin"/>
+                android:layout_marginBottom="@dimen/progressbar_top_margin"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/photo"
@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/city_image"
                 android:scaleType="centerCrop"
-                android:src="@drawable/nophoto"/>
+                android:src="@drawable/nophoto" />
 
         </LinearLayout>
 
@@ -50,7 +50,8 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
             android:hint="@string/name"
             app:boxBackgroundColor="?attr/colorOnSecondary"
             app:endIconContentDescription="@string/start_search"
@@ -69,7 +70,8 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
             android:hint="@string/description"
             app:boxBackgroundColor="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="parent"

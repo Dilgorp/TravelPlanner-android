@@ -42,10 +42,10 @@ interface TravelsApiService {
     ): Response<List<Travel>>
 
     companion object {
-        private const val ADD_TRAVEL_PATH = "/user/{user_uuid}/travel/add"
-        private const val GET_TRAVEL_PATH = "/user/{user_uuid}/travel/{travel_uuid}"
-        private const val DELETE_TRAVEL_PATH = "/user/{user_uuid}/travel/{travel_uuid}/delete"
-        private const val REFRESH_TRAVEL_PATH = "/user/{user_uuid}/travel/{travel_uuid}/refresh"
-        private const val ALL_TRAVEL_PATH = "/user/{user_uuid}/travel/all"
+        private const val ADD_TRAVEL_PATH = "user/{user_uuid}/travel/add"
+        private const val GET_TRAVEL_PATH = "user/{user_uuid}/travel/{travel_uuid}"
+        private const val DELETE_TRAVEL_PATH = "user/{user_uuid}/travel/{travel_uuid}/delete"
+        private const val REFRESH_TRAVEL_PATH = "user/{user_uuid}/travel/{travel_uuid}/refresh"
+        private const val ALL_TRAVEL_PATH = "user/{user_uuid}/travel/all"
     }
 }

@@ -5,9 +5,6 @@ import java.util.*
 data class Place(
     val uuid: UUID,
     val name: String,
-    val description: String
-) {
-    companion object {
-        const val CITY_UUID_NAME = "cityUUID"
-    }
-}
+    val description: String,
+    val imagePath: String
+)

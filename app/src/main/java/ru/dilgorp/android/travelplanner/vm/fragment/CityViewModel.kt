@@ -63,4 +63,24 @@ class CityViewModel @Inject constructor(
     fun setMessage(messageString: String?) {
         cityRepository.setMessage(messageString ?: "")
     }
+
+    fun refreshCity(city: City) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = cityRepository.refreshCity(city).data
+            if (result != null) {
+                _city.postValue(result)
+            }
+        }
+    }
+
+    fun deleteCityPlace(cityPlace: CityPlace) {
+        _searching.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = cityRepository.deleteCityPlace(cityPlace).data
+            if (result != null) {
+                _places.postValue(result)
+            }
+            _searching.postValue(false)
+        }
+    }
 }

@@ -87,6 +87,6 @@ class CityPlacesAdapter(
 
     companion object {
         private const val GET_PLACE_IMAGE_PATH =
-            "/user/{user_uuid}/travel/{travel_uuid}/city/{city_uuid}/places/{place_uuid}/photo"
+            "user/{user_uuid}/travel/{travel_uuid}/city/{city_uuid}/places/{place_uuid}/photo"
     }
 }

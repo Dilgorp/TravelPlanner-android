@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -24,7 +25,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import ru.dilgorp.android.travelplanner.R
 import ru.dilgorp.android.travelplanner.data.City
-import ru.dilgorp.android.travelplanner.data.Place.Companion.CITY_UUID_NAME
 import ru.dilgorp.android.travelplanner.databinding.FragmentCityBinding
 import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.AUTHORIZATION_HEADER_NAME
 import ru.dilgorp.android.travelplanner.di.NetworkModule.Companion.BASE_URL_NAME
@@ -32,6 +32,7 @@ import ru.dilgorp.android.travelplanner.navigator.Navigator
 import ru.dilgorp.android.travelplanner.provider.AppComponentProvider
 import ru.dilgorp.android.travelplanner.provider.CredentialsProvider
 import ru.dilgorp.android.travelplanner.ui.adapter.CityPlacesAdapter
+import ru.dilgorp.android.travelplanner.ui.callback.DeleteItemCallback
 import ru.dilgorp.android.travelplanner.ui.dialog.showMessage
 import ru.dilgorp.android.travelplanner.vm.ViewModelFactory
 import ru.dilgorp.android.travelplanner.vm.fragment.CityViewModel
@@ -100,6 +101,8 @@ class CityFragment : Fragment() {
             }
             places.observe(viewLifecycleOwner) {
                 adapter.setData(it)
+                binding.placesCount.text = it.size.toString()
+                viewModel.refreshCity(this@CityFragment.city)
             }
         }
     }
@@ -114,6 +117,10 @@ class CityFragment : Fragment() {
 
         setupCityFields(city)
 
+        val itemTouchHelper = ItemTouchHelper(DeleteItemCallback{
+            viewModel.deleteCityPlace(adapter.currentList[it])
+        })
+
         with(binding) {
             name.setEndIconOnClickListener {
                 name.editText?.let { et ->
@@ -123,7 +130,7 @@ class CityFragment : Fragment() {
             }
             placesTitleLayout.setOnClickListener {
                 val args = Bundle()
-                args.putSerializable(CITY_UUID_NAME, city.userRequestUuid)
+                args.putSerializable(City.ARG_NAME, city)
                 navigator.navigateToDestination(
                     navController,
                     R.id.placesFragment,
@@ -131,6 +138,7 @@ class CityFragment : Fragment() {
                 )
             }
             placesRv.adapter = adapter
+            itemTouchHelper.attachToRecyclerView(placesRv)
         }
     }
 

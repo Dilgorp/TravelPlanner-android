@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.dilgorp.android.travelplanner.data.City
 import ru.dilgorp.android.travelplanner.data.CityPlace
+import ru.dilgorp.android.travelplanner.network.CitiesApiService
 import ru.dilgorp.android.travelplanner.network.CityPlacesApiService
 import ru.dilgorp.android.travelplanner.network.SearchApiService
 import ru.dilgorp.android.travelplanner.network.response.Response
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class CityRepositoryImpl @Inject constructor(
     private val searchApiService: SearchApiService,
     private val cityPlacesApiService: CityPlacesApiService,
+    private val cityApiService: CitiesApiService,
     private val loginDataProvider: LoginDataProvider
 ) : CityRepository {
 
@@ -43,6 +45,38 @@ class CityRepositoryImpl @Inject constructor(
             val response = cityPlacesApiService.getCityPlaces(
                 loginDataProvider.credentials.value ?: "",
                 city.userUuid, city.travelUuid, city.uuid
+            )
+            if (response.type == ResponseType.ERROR) {
+                throw IllegalStateException(response.message)
+            }
+            response
+        } catch (e: Exception) {
+            _message.postValue(e.localizedMessage)
+            Response(ResponseType.ERROR, e.localizedMessage ?: "", null)
+        }
+    }
+
+    override suspend fun refreshCity(city: City): Response<City> {
+        return try {
+            val response = cityApiService.refreshCity(
+                loginDataProvider.credentials.value ?: "",
+                city.userUuid, city.travelUuid, city.uuid
+            )
+            if (response.type == ResponseType.ERROR) {
+                throw IllegalStateException(response.message)
+            }
+            response
+        } catch (e: Exception) {
+            _message.postValue(e.localizedMessage)
+            Response(ResponseType.ERROR, e.localizedMessage ?: "", null)
+        }
+    }
+
+    override suspend fun deleteCityPlace(cityPlace: CityPlace): Response<List<CityPlace>> {
+        return try {
+            val response = cityPlacesApiService.deleteCityPlace(
+                loginDataProvider.credentials.value ?: "",
+                cityPlace.userUuid, cityPlace.travelUuid, cityPlace.cityUuid, cityPlace.uuid
             )
             if (response.type == ResponseType.ERROR) {
                 throw IllegalStateException(response.message)

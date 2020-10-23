@@ -23,4 +23,7 @@
     <string name="place_photo">Place photo</string>
     <string name="add_button">Add button</string>
     <string name="cities_colon">Cities:</string>
+    <string name="drop_selection">Drop selection</string>
+    <string name="accept_selection">Accept selection</string>
+    <string name="selected_colon">Selected:</string>
 </resources>
