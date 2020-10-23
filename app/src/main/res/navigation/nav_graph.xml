@@ -15,21 +15,22 @@
         android:id="@+id/cityFragment"
         android:name="ru.dilgorp.android.travelplanner.ui.fragments.CityFragment"
         android:label="@string/city"
-        tools:layout="@layout/fragment_city" />
+        tools:layout="@layout/fragment_city">
+    </fragment>
 
     <fragment
         android:id="@+id/placesFragment"
         android:name="ru.dilgorp.android.travelplanner.ui.fragments.PlacesFragment"
-        android:label="PlacesFragment"
+        android:label="@string/places"
         tools:layout="@layout/fragment_places" />
 
     <fragment
         android:id="@+id/travelsFragment"
         android:name="ru.dilgorp.android.travelplanner.ui.fragments.TravelsFragment"
-        android:label="TravelsFragment" />
+        android:label="@string/travels" />
 
     <fragment
         android:id="@+id/travelFragment"
         android:name="ru.dilgorp.android.travelplanner.ui.fragments.TravelFragment"
-        android:label="TravelFragment" />
+        android:label="@string/travel" />
 </navigation>

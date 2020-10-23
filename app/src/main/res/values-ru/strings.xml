@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Планировщик путешествий</string>
+    <string name="password">Пароль</string>
+    <string name="username">Имя пользователя</string>
+    <string name="enter">Вход</string>
+    <string name="signIn">Войти</string>
+    <string name="signUp">Зарегистрироваться</string>
+    <string name="authentication">Аутентификация</string>
+    <string name="open">Открыть</string>
+    <string name="error_message">Сообщение об ошибке</string>
+    <string name="user_logged">Пользователь вошел</string>
+    <string name="user_logout">Пользователь вышел</string>
+    <string name="logout">Выход</string>
+    <string name="city">Город</string>
+    <string name="city_image">Изображение города</string>
+    <string name="name">Имя</string>
+    <string name="start_search">Начать поиск</string>
+    <string name="description">Описание</string>
+    <string name="places_colon">"Мест: "</string>
+    <string name="place_photo">Изображение места</string>
+    <string name="add_button">Кнопка добавления</string>
+    <string name="cities_colon">"Городов: "</string>
+    <string name="drop_selection">Очистить выделенные</string>
+    <string name="accept_selection">Добавить выделенные</string>
+    <string name="selected_colon">"Выбрано: "</string>
+    <string name="travels">Путешествия</string>
+    <string name="places">Места</string>
+    <string name="travel">Путешествие</string>
+</resources>
