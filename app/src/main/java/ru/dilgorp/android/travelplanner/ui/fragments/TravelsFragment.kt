@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import ru.dilgorp.android.travelplanner.R
 import ru.dilgorp.android.travelplanner.data.Travel
 import ru.dilgorp.android.travelplanner.databinding.FragmentTravelsBinding
@@ -18,6 +19,7 @@ import ru.dilgorp.android.travelplanner.navigator.Navigator
 import ru.dilgorp.android.travelplanner.provider.AppComponentProvider
 import ru.dilgorp.android.travelplanner.provider.CredentialsProvider
 import ru.dilgorp.android.travelplanner.ui.adapter.TravelsAdapter
+import ru.dilgorp.android.travelplanner.ui.callback.DeleteItemCallback
 import ru.dilgorp.android.travelplanner.ui.dialog.showMessage
 import ru.dilgorp.android.travelplanner.vm.ViewModelFactory
 import ru.dilgorp.android.travelplanner.vm.fragment.TravelsViewModel
@@ -93,11 +95,16 @@ class TravelsFragment : Fragment() {
             viewModel.selectTravel(it)
         }
 
+        val itemTouchHelper = ItemTouchHelper(DeleteItemCallback{
+            viewModel.deleteTravel(adapter.currentList[it])
+        })
+
         with(binding) {
             travelsRv.adapter = adapter
             addTravelButton.setOnClickListener {
                 viewModel.addTravel()
             }
+            itemTouchHelper.attachToRecyclerView(travelsRv)
         }
     }
 

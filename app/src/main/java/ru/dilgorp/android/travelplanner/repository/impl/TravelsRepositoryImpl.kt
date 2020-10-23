@@ -43,6 +43,19 @@ class TravelsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteTravel(travel: Travel): Response<List<Travel>> {
+        return try{
+            travelsApiService.deleteTravel(
+                loginDataProvider.credentials.value ?: "",
+                travel.userUuid,
+                travel.uuid
+            )
+        }catch (e: Exception){
+            _message.postValue(e.message)
+            Response(ResponseType.ERROR, "", null)
+        }
+    }
+
     override fun messageShown() {
         setMessage("")
     }

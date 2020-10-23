@@ -52,6 +52,17 @@ class TravelsViewModel @Inject constructor(
         loadingStopped()
     }
 
+    fun deleteTravel(travel: Travel)  = viewModelScope.launch(Dispatchers.IO) {
+        loadingStarted()
+        val response = travelsRepository.deleteTravel(travel)
+        if (response.type == ResponseType.SUCCESS) {
+            response.data?.let {
+                _travels.postValue(it)
+            }
+        }
+        loadingStopped()
+    }
+
     fun selectTravel(travel: Travel) {
         _travel.value = travel
     }

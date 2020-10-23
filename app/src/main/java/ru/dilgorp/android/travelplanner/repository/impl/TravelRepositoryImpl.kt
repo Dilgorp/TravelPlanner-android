@@ -62,6 +62,20 @@ class TravelRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteCity(city: City): Response<List<City>> {
+        return try{
+            citiesApiService.deleteCity(
+                loginDataProvider.credentials.value ?: "",
+                city.userUuid,
+                city.travelUuid,
+                city.uuid
+            )
+        }catch (e: Exception){
+            _message.postValue(e.message)
+            Response(ResponseType.ERROR, "", null)
+        }
+    }
+
     override fun messageShown() {
         setMessage("")
     }

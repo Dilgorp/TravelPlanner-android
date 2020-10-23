@@ -26,7 +26,7 @@ interface TravelsApiService {
         @Header(AUTHORIZATION_HEADER_NAME) credentials: String,
         @Path("user_uuid") userUuid: UUID,
         @Path("travel_uuid") travelUuid: UUID
-    ): Response<Travel>
+    ): Response<List<Travel>>
 
     @POST(REFRESH_TRAVEL_PATH)
     suspend fun refreshTravel(

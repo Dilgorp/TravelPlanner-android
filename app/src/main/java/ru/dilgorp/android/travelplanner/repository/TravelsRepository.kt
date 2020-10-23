@@ -7,4 +7,5 @@ import java.util.*
 interface TravelsRepository : MessageRepository {
     suspend fun getTravels(): Response<List<Travel>>
     suspend fun addTravel(): Response<Travel>
+    suspend fun deleteTravel(travel: Travel): Response<List<Travel>>
 }

@@ -9,4 +9,5 @@ interface TravelRepository: MessageRepository {
     suspend fun getCities(travelUuid: UUID) : Response<List<City>>
     suspend fun addCity(travelUuid: UUID): Response<City>
     suspend fun refreshTravel(travelUuid: UUID): Response<Travel>
+    suspend fun deleteCity(city: City): Response<List<City>>
 }

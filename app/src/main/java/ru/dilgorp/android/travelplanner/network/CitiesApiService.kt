@@ -36,7 +36,7 @@ interface CitiesApiService {
         @Path("user_uuid") userUuid: UUID,
         @Path("travel_uuid") travelUuid: UUID,
         @Path("city_uuid") cityUuid: UUID
-    ): Response<City>
+    ): Response<List<City>>
 
     companion object{
         private const val GET_CITIES_PATH = "/user/{user_uuid}/travel/{travel_uuid}/city/all"

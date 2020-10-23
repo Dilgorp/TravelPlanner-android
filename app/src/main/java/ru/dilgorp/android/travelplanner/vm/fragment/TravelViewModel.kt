@@ -54,6 +54,16 @@ class TravelViewModel @Inject constructor(
         stopLoading()
     }
 
+    fun deleteCity(city: City)  = viewModelScope.launch (Dispatchers.IO) {
+        startLoading()
+        val response = travelRepository.deleteCity(city)
+        if(response.type == ResponseType.SUCCESS){
+            _cities.postValue(response.data)
+        }
+        travelRepository.refreshTravel(city.travelUuid)
+        stopLoading()
+    }
+
     fun selectCity(city: City){
         _city.value = city
     }
