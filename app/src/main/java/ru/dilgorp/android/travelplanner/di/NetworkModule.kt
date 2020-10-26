@@ -19,8 +19,6 @@ class NetworkModule {
 
     companion object {
         const val BASE_URL_NAME = "ru.dilgorp.android.travelplanner.base_url"
-        const val SEARCH_PHOTO_PATH_NAME = "ru.dilgorp.android.travelplanner.search_photo_path"
-        const val SEARCH_PLACE_PHOTO_PATH_NAME = "ru.dilgorp.android.travelplanner.search_place_photo_path"
         const val AUTHORIZATION_HEADER_NAME = "Authorization"
     }
 
@@ -29,13 +27,6 @@ class NetworkModule {
     @Named(BASE_URL_NAME)
     fun provideBaseUrl(): String {
         return BuildConfig.LOCAL_SERVER
-    }
-
-    @Provides
-    @Singleton
-    @Named(SEARCH_PLACE_PHOTO_PATH_NAME)
-    fun provideSearchPlacePhotoPath(): String {
-        return "search/places/photo/"
     }
 
     @Provides
@@ -90,19 +81,19 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTravelsApiService(retrofit: Retrofit): TravelsApiService{
+    fun provideTravelsApiService(retrofit: Retrofit): TravelsApiService {
         return retrofit.create(TravelsApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideCitiesApiService(retrofit: Retrofit): CitiesApiService{
+    fun provideCitiesApiService(retrofit: Retrofit): CitiesApiService {
         return retrofit.create(CitiesApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideCityPlacesApiService(retrofit: Retrofit): CityPlacesApiService{
+    fun provideCityPlacesApiService(retrofit: Retrofit): CityPlacesApiService {
         return retrofit.create(CityPlacesApiService::class.java)
     }
 }

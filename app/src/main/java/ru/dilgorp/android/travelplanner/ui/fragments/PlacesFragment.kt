@@ -38,10 +38,6 @@ class PlacesFragment : Fragment() {
     lateinit var baseUrl: String
 
     @Inject
-    @Named(NetworkModule.SEARCH_PLACE_PHOTO_PATH_NAME)
-    lateinit var searchPhotoPath: String
-
-    @Inject
     lateinit var navigator: Navigator
 
     private lateinit var city: City
@@ -57,7 +53,7 @@ class PlacesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPlacesBinding.inflate(inflater, container, false)
-        adapter = PlacesAdapter(baseUrl, searchPhotoPath, viewModel.credentials)
+        adapter = PlacesAdapter(baseUrl, viewModel.credentials)
 
         city = arguments?.getSerializable(City.ARG_NAME) as City
 

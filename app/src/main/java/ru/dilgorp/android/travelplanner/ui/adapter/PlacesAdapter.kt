@@ -21,7 +21,6 @@ import ru.dilgorp.android.travelplanner.di.NetworkModule
 
 class PlacesAdapter(
     private val baseUrl: String,
-    private val searchPhotoPath: String,
     private val credentials: String
 ) : ListAdapter<Place, PlacesAdapter.ViewHolder>(PlaceDiffCallback()) {
 
@@ -43,7 +42,7 @@ class PlacesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), baseUrl, searchPhotoPath, credentials, _selectedPlaces){
+        holder.bind(getItem(position), baseUrl, credentials, _selectedPlaces){
             updateSelectedPlaceSize()
         }
     }
@@ -75,12 +74,13 @@ class PlacesAdapter(
                 val binding = ListItemPlaceBinding.inflate(inflater, parent, false)
                 return ViewHolder(binding, parent.context)
             }
+            private const val SEARCH_PLACE_PHOTO_PATH =
+                "search/places/photo/"
         }
 
         fun bind(
             place: Place,
             baseUrl: String,
-            searchPhotoPath: String,
             credentials: String,
             selectedPlaces: MutableList<Place>,
             selectItemCallback: () -> Unit
@@ -90,7 +90,7 @@ class PlacesAdapter(
                 description.text = place.description
 
                 val glideUrl = GlideUrl(
-                    "$baseUrl$searchPhotoPath${place.uuid}",
+                    "$baseUrl$SEARCH_PLACE_PHOTO_PATH${place.uuid}",
                     LazyHeaders.Builder()
                         .addHeader(NetworkModule.AUTHORIZATION_HEADER_NAME, credentials).build()
                 )
